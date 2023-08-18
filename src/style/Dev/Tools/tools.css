@@ -1,0 +1,35 @@
+.dev-tools {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+.tool {
+    border: 1px solid black;
+    padding: 10px;
+    width: 340px;
+    height: 300px;
+    margin: 10px;
+}
+
+.tool:nth-child(1) { background-color: blue; }
+.tool:nth-child(2) { background-color: gray; }
+.tool:nth-child(3) { background-color: brown; }
+.tool:nth-child(4) { background-color: teal; }
+.tool:nth-child(5) { background-color: darkslategray; }
+.tool:nth-child(6) { background-color: indigo; }
+.tool:nth-child(7) { background-color: darkred; }
+.tool:nth-child(8) { background-color: darkolivegreen; }
+.tool:nth-child(9) { background-color: midnightblue; }
+.tool:nth-child(10) { background-color: darkmagenta; }
+.tool:nth-child(11) { background-color: slategray; }
+.tool:nth-child(12) { background-color: darkorange; }
+.tool:nth-child(13) { background-color: darkgreen; }
+.tool:nth-child(14) { background-color: darkcyan; }
+.tool:nth-child(15) { background-color: darkviolet; }
+.tool:nth-child(16) { background-color: maroon; }
+.tool:nth-child(17) { background-color: darkblue; }
+.tool:nth-child(18) { background-color: sienna; }
+.tool:nth-child(19) { background-color: olive; }
+.tool:nth-child(20) { background-color: purple; }

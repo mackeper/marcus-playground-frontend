@@ -1,0 +1,7 @@
+.username-generator ul {
+    list-style-type: none;
+}
+
+.username-generator li {
+    font-size: 40px;
+}

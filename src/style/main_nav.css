@@ -1,0 +1,13 @@
+nav {
+    height: 99vh;
+    background-color: crimson;
+    padding: 5px;
+    flex: 0 0 290px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
+nav > li {
+    text-decoration: none;
+}

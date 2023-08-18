@@ -1,0 +1,5 @@
+.main-content {
+    background-color: green;
+    flex-grow: 1;
+    padding: 5px;
+}
