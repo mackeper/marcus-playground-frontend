@@ -15,6 +15,7 @@ import Pages.UsernameGenerator.UsernameGenerator as UsernameGenerator
 import Platform.Cmd as Cmd
 import Route exposing (Route(..))
 import Url
+import Pages.Tracker.Tracker as Tracker
 
 
 
@@ -60,6 +61,7 @@ type Page
     | DevTools DevTools.Model
     | GamesCS GamesCS.Model
     | UsernameGenerator UsernameGenerator.Model
+    | Tracker Tracker.Model
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -87,6 +89,7 @@ type Msg
     | DevToolsMsg DevTools.Msg
     | GamesCSMsg GamesCS.Msg
     | UsernameGeneratorMsg UsernameGenerator.Msg
+    | TrackerMsg Tracker.Msg
 
 
 initCurrentPage : ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
@@ -120,6 +123,9 @@ initCurrentPage ( model, existingCmds ) =
 
                 Route.GamesCS ->
                     GamesCS.init |> initTo GamesCS GamesCSMsg
+                    
+                Route.Tracker ->
+                    Tracker.init |> initTo Tracker TrackerMsg
     in
     ( { model | page = currentPage }, Cmd.batch [ existingCmds, pageCmd ] )
 
@@ -199,6 +205,7 @@ view model =
                     , viewLink "/blog"
                     , viewLink "/blog/new"
                     , viewLink "/diet"
+                    , viewLink "/tracker"
                     ]
                 ]
             , div [ class "main-content" ] [ viewPage model ]
@@ -234,8 +241,12 @@ viewPage model =
         GamesCS pageModel ->
             GamesCS.view pageModel |> Html.map GamesCSMsg
 
-        UsernameGenerator usernameGeneratorModel ->
-            UsernameGenerator.view usernameGeneratorModel |> Html.map UsernameGeneratorMsg
+        UsernameGenerator pageModel ->
+            UsernameGenerator.view pageModel |> Html.map UsernameGeneratorMsg
+        
+        Tracker pageModel ->
+            Tracker.view pageModel |> Html.map TrackerMsg
+
 
 
 viewLink : String -> Html Msg
