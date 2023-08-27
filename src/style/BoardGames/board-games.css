@@ -1,0 +1,38 @@
+.board-games {
+}
+
+.board-games-gameinfos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.board-games-gameinfo {
+    border: 1px solid black;
+    padding: 10px;
+    width: 340px;
+    height: 300px;
+    margin: 10px;
+}
+
+
+.board-games-gameinfo:nth-child(1) { background-color: blue; }
+.board-games-gameinfo:nth-child(2) { background-color: gray; }
+.board-games-gameinfo:nth-child(3) { background-color: brown; }
+.board-games-gameinfo:nth-child(4) { background-color: teal; }
+.board-games-gameinfo:nth-child(5) { background-color: darkslategray; }
+.board-games-gameinfo:nth-child(6) { background-color: indigo; }
+.board-games-gameinfo:nth-child(7) { background-color: darkred; }
+.board-games-gameinfo:nth-child(8) { background-color: darkolivegreen; }
+.board-games-gameinfo:nth-child(9) { background-color: midnightblue; }
+.board-games-gameinfo:nth-child(10) { background-color: darkmagenta; }
+.board-games-gameinfo:nth-child(11) { background-color: slategray; }
+.board-games-gameinfo:nth-child(12) { background-color: darkorange; }
+.board-games-gameinfo:nth-child(13) { background-color: darkgreen; }
+.board-games-gameinfo:nth-child(14) { background-color: darkcyan; }
+.board-games-gameinfo:nth-child(15) { background-color: darkviolet; }
+.board-games-gameinfo:nth-child(16) { background-color: maroon; }
+.board-games-gameinfo:nth-child(17) { background-color: darkblue; }
+.board-games-gameinfo:nth-child(18) { background-color: sienna; }
+.board-games-gameinfo:nth-child(19) { background-color: olive; }
+.board-games-gameinfo:nth-child(20) { background-color: purple; }

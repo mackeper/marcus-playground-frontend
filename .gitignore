@@ -4,7 +4,9 @@ elm-stuff
 repl-temp-*
 
 # Build
-/out
+out/
 
 # Editor
 .vscode
+
+node_modules/

@@ -16,6 +16,7 @@ import Platform.Cmd as Cmd
 import Route exposing (Route(..))
 import Url
 import Pages.Tracker.Tracker as Tracker
+import Pages.BoardGames.BoardGames as BoardGames
 
 
 
@@ -62,6 +63,7 @@ type Page
     | GamesCS GamesCS.Model
     | UsernameGenerator UsernameGenerator.Model
     | Tracker Tracker.Model
+    | BoardGames BoardGames.Model
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -90,6 +92,7 @@ type Msg
     | GamesCSMsg GamesCS.Msg
     | UsernameGeneratorMsg UsernameGenerator.Msg
     | TrackerMsg Tracker.Msg
+    | BoardGamesMsg BoardGames.Msg
 
 
 initCurrentPage : ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
@@ -126,6 +129,9 @@ initCurrentPage ( model, existingCmds ) =
                     
                 Route.Tracker ->
                     Tracker.init |> initTo Tracker TrackerMsg
+
+                Route.BoardGames ->
+                    BoardGames.init |> initTo BoardGames BoardGamesMsg
     in
     ( { model | page = currentPage }, Cmd.batch [ existingCmds, pageCmd ] )
 
@@ -206,6 +212,7 @@ view model =
                     , viewLink "/blog/new"
                     , viewLink "/diet"
                     , viewLink "/tracker"
+                    , viewLink "/boardgames"
                     ]
                 ]
             , div [ class "main-content" ] [ viewPage model ]
@@ -219,7 +226,7 @@ viewPage model =
     case model.page of
         NotFound ->
             text "Not found"
-
+        
         Home pageModel ->
             Home.view pageModel |> Html.map HomeMsg
 
@@ -246,6 +253,9 @@ viewPage model =
         
         Tracker pageModel ->
             Tracker.view pageModel |> Html.map TrackerMsg
+
+        BoardGames pageModel ->
+            BoardGames.view pageModel |> Html.map BoardGamesMsg
 
 
 

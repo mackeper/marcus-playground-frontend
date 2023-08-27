@@ -15,6 +15,7 @@ type Route
     | Home
     | UsernameGenerator
     | Tracker
+    | BoardGames
 
 
 parseUrl : Url -> Route
@@ -40,4 +41,5 @@ matchRoute =
         , map GamesCS (s "games" </> s "cs")
         , map UsernameGenerator (s "usernamegenerator")
         , map Tracker (s "tracker")
+        , map BoardGames (s "boardgames")
         ]
