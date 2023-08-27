@@ -6,6 +6,7 @@ New-Item -ItemType Directory -Path .\out -ErrorAction 'SilentlyContinue'
 New-Item -ItemType Directory -Path .\out\assets\favicon\ -Force
 Copy-Item .\src\assets\favicon\favicon.ico .\out\assets\favicon\favicon.ico
 Copy-Item .\src\html\* .\out\ -Recurse
+sass --no-source-map .\src\style:.\out
 elm make .\src\Main.elm --output .\out\spa.js
 
 
@@ -35,4 +36,4 @@ function Concatenate-CSSFiles {
 }
 
 
-Concatenate-CSSFiles -SourceDirectory ".\src\style" -OutputFile ".\out\main.css"
+# Concatenate-CSSFiles -SourceDirectory ".\src\style" -OutputFile ".\out\main.css"

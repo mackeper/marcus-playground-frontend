@@ -1,3 +1,13 @@
+@use './_main_container.scss';
+@use './_main_content.scss';
+@use './_main_nav.scss';
+
+@use './Blog/_blog.scss';
+@use './BoardGames/_board-games.scss';
+@use './Dev/_dev.scss';
+@use './Diet/_diet.scss';
+@use './UsernameGenerator/_username-generator.scss';
+
 * {
     /* font-family: 'VT323', monospace; */
     font-family: 'Consolas', monospace;

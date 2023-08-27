@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "start": "live-server --port=3000 --entry-file=index.html --host=localhost",
-    "build": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./build.ps1"
+    "server": "cd ./out && live-server --port=8080 --entry-file=./out/index.html --host=localhost",
+    "build": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./build.ps1",
+    "watch": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./watcher.ps1"
   },
   "devDependencies": {
     "live-server": "^1.1.0",
