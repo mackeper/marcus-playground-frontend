@@ -1,13 +1,58 @@
+@use './_screen_mixins.scss' as screen;
+
 nav {
-    height: 99vh;
     background-color: crimson;
     padding: 5px;
-    flex: 0 0 290px;
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
+
+    text-align: right;
+
+    label {
+        cursor: pointer;
+        font-size: 40px;
+    }
+
+    ul {
+        display: none;
+        position: absolute;
+        top: 100%; /* Position below the label */
+        left: 0;
+        z-index: 1; /* Display above other content */
+        background-color: inherit;
+        width: 100%;
+
+        li {
+            text-decoration: none;
+            a {
+                display: block;
+                font-size: 32px;
+                padding: 10px;
+                text-align: center;
+            }
+        }
+    }
+
+    @include screen.desktop {
+        height: 99vh;
+        flex: 0 0 290px;
+
+        label {
+            display: none;
+        }
+
+        ul {
+            display: block;
+            position: static;
+        }
+    }
 }
 
-nav > li {
-    text-decoration: none;
+#nav-trigger {
+    display: none;
+
+    &:checked + nav ul {
+        display: block;
+    }
 }

@@ -2,6 +2,7 @@ module Pages.Blog.NewEntry exposing (Model, Msg(..), init, subscriptions, update
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Attributes.Extra exposing (..)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Modules.Date as Date exposing (Date)
@@ -124,7 +125,7 @@ update msg ({ entry } as model) =
 
 viewEntriesList : Model -> List (Html Msg)
 viewEntriesList model =
-    List.map (\x -> li [ onClick (LoadEntry x) ] [ text (String.fromInt x.id ++ " " ++ x.title) ]) model.entries
+    List.map (\x -> button [ class "secondary outline", onClick (LoadEntry x) ] [ text (String.fromInt x.id ++ " " ++ x.title) ]) model.entries
 
 
 viewPostOrPut : Model -> Html Msg
@@ -139,15 +140,15 @@ viewPostOrPut model =
 view : Model -> Html Msg
 view model =
     div [ class "blog-new-entry" ]
-        [ div [ class "blog-new-entry-editor" ]
+        [ div [ class "blog-new-entry-editor grid" ]
             [ div [ class "blog-new-entry-form" ]
                 [ input [ placeholder "Title", type_ "text", onInput UpdateTitle, value model.entry.title ] []
-                , textarea [ placeholder "Content", onInput UpdateContent, value model.entry.content ] []
+                , textarea [ placeholder "Content", onInput UpdateContent, value model.entry.content, rows 10 ] []
                 , input [ placeholder "Date", type_ "datetime-local", onInput UpdateDate, value (Date.parseDateTimeToIso8601 model.entry.createdAt) ] []
                 , input [ placeholder "Tags (comma separated)", type_ "text", onInput UpdateTags, value (String.join "," model.entry.tags) ] []
-                , div []
-                    [ label [ for "newEntryPublishedCheckbox" ] [ text "Published" ]
-                    , input [ type_ "checkbox", id "newEntryPublishedCheckbox", onCheck UpdatePublished, checked model.entry.published ] [ text "Publish" ]
+                , label [ for "newEntryPublishedCheckbox" ]
+                    [ input [ type_ "checkbox", id "newEntryPublishedCheckbox", onCheck UpdatePublished, checked model.entry.published ] [ text "Publish" ]
+                    , text "Published"
                     ]
                 , viewPostOrPut model
                 ]

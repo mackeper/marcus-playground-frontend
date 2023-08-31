@@ -77,7 +77,7 @@ viewPosts model =
 
 viewTags : Entry -> List (Html Msg)
 viewTags entry =
-    List.map (\tag -> div [ class "blog-tag" ] [ text tag ]) entry.tags
+    List.map (\tag -> code [ class "blog-tag" ] [ text tag ]) entry.tags
 
 
 viewContent : String -> String
@@ -87,9 +87,11 @@ viewContent content =
 
 viewEntry : Entry -> Html Msg
 viewEntry entry =
-    div [ class "blog-entry" ]
-        [ h1 [] [ text entry.title ]
-        , p [] (viewTags entry)
-        , p [] [ text (formatDate entry.createdAt) ]
+    article [ class "blog-entry" ]
+        [ header [ class "headings" ]
+            [ h2 [] [ text entry.title ]
+            , h3 [] [ text (formatDate entry.createdAt) ]
+            , p [] (viewTags entry)
+            ]
         , p [] (HtmlUtils.textHtml (viewContent entry.content))
         ]

@@ -1,13 +1,12 @@
-module Pages.Tracker.Tracker exposing (Model, Msg(..), init, update, view, subscriptions)
-
+module Pages.Tracker.Tracker exposing (Model, Msg(..), init, subscriptions, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
 
 type alias Model =
-    { text1: String
-    , text2: String
+    { text1 : String
+    , text2 : String
     }
 
 

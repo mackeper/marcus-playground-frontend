@@ -1,3 +1,9 @@
+@use './_screen_mixins.scss' as screen;
+
 .container {
     display: flex;
+    flex-direction: row;
+    @include screen.tablet {
+        flex-direction: column;
+    }
 }

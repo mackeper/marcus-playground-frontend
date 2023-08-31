@@ -2,8 +2,7 @@ module Pages.Diet.Diet exposing (Model, Msg(..), init, subscriptions, update, vi
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Pages.Diet.Micronutrient exposing (Micronutrient, getMicronutrients)
-import Pages.Diet.Micronutrient as Micronutrient
+import Pages.Diet.Micronutrient as Micronutrient exposing (Micronutrient, getMicronutrients)
 
 
 type alias Model =
@@ -40,15 +39,17 @@ subscriptions model =
 
 viewMicronutrient : Micronutrient -> Html msg
 viewMicronutrient micronutrient =
-    div [class "diet-micronutrient"]
-    [
-        h2 [] [ text micronutrient.name ]
+    article [ class "diet-micronutrient" ]
+        [ h2 [] [ text micronutrient.name ]
         , p [] [ text (Micronutrient.toString micronutrient) ]
-    ]
+        ]
+
 
 view : Model -> Html msg
 view model =
-    div [class "diet"] (List.map viewMicronutrient model.micronutrients)
+    div [ class "diet" ] (List.map viewMicronutrient model.micronutrients)
+
+
 
 -- view : Model -> Html Msg
 -- view model =

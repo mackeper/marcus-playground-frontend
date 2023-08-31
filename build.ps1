@@ -6,7 +6,10 @@ New-Item -ItemType Directory -Path .\out -ErrorAction 'SilentlyContinue'
 New-Item -ItemType Directory -Path .\out\assets\favicon\ -Force
 Copy-Item .\src\assets\favicon\favicon.ico .\out\assets\favicon\favicon.ico
 Copy-Item .\src\html\* .\out\ -Recurse
-sass --no-source-map .\src\style:.\out
+Copy-Item .\src\style\pico.min.css .\out\
+# Copy-Item .\src\style\main.css .\out\
+sass --no-source-map .\src\style\main.scss:.\out\main.css
+# sass --no-source-map .\src\style:.\out
 elm make .\src\Main.elm --output .\out\spa.js
 
 

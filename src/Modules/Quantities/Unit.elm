@@ -1,4 +1,5 @@
 module Modules.Quantities.Unit exposing (..)
 
-type Unit =
-    Unit String
+
+type Unit
+    = Unit String

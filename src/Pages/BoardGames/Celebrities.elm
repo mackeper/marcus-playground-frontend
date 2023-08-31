@@ -1,5 +1,4 @@
-module Pages.BoardGames.Celebrities exposing (Model, Msg(..), init, update, view, subscriptions, gameInfo)
-
+module Pages.BoardGames.Celebrities exposing (Model, Msg(..), gameInfo, init, subscriptions, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -7,17 +6,19 @@ import Pages.BoardGames.GameInfo exposing (GameInfo)
 
 
 type alias Model =
-    {
-    }
+    {}
+
 
 gameInfo : GameInfo
-gameInfo = GameInfo "Celebrities" "Try to find out which celebrity that your co-players choose!" "png" 2 100 4 10 1 5
+gameInfo =
+    GameInfo "Celebrities" "Try to find out which celebrity that your co-players choose!" "png" 2 100 4 10 1 5
+
 
 init : ( Model, Cmd Msg )
 init =
-    (
-        Model
-    , Cmd.none )
+    ( Model
+    , Cmd.none
+    )
 
 
 type Msg

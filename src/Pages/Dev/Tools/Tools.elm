@@ -54,7 +54,7 @@ viewPosts model =
 
 viewPost : Tool -> Html msg
 viewPost post =
-    div [ class "tool" ]
+    article [ class "tool" ]
         [ h1 [] [ text post.title ]
         , div [] [ text post.text ]
         ]

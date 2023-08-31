@@ -33,7 +33,7 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div [ class "username-generator" ]
+    article [ class "username-generator" ]
         [ div [] (viewCategories model.categories)
         , button [ onClick GenerateUsername ] [ text "Generate username" ]
         , viewUsernames model.usernames

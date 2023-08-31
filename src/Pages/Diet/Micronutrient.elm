@@ -1,5 +1,6 @@
 module Pages.Diet.Micronutrient exposing (Micronutrient, getMicronutrients, toString)
-import Modules.Quantities.Mass exposing (Mass, milligrams, inMilligrams, micrograms, inMicrograms)
+
+import Modules.Quantities.Mass exposing (Mass, inMicrograms, inMilligrams, micrograms, milligrams)
 
 
 type alias Micronutrient =
@@ -7,13 +8,15 @@ type alias Micronutrient =
     , dailyIntake : Mass
     }
 
+
 toString : Micronutrient -> String
 toString micronutrient =
     micronutrient.name ++ " Daily intake: " ++ String.fromFloat (inMilligrams micronutrient.dailyIntake)
 
+
 getMicronutrients : List Micronutrient
 getMicronutrients =
- [ Micronutrient "Iron" (milligrams 0.0018)
+    [ Micronutrient "Iron" (milligrams 0.0018)
     , Micronutrient "Fluor" (milligrams 0.05)
     , Micronutrient "Fosfor" (milligrams 700)
     , Micronutrient "Jod" (micrograms 150)

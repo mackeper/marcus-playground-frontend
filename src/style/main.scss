@@ -1,43 +1,55 @@
-@use './_main_container.scss';
-@use './_main_content.scss';
-@use './_main_nav.scss';
+.mobile-navbar {
+    display: flex;
 
-@use './Blog/_blog.scss';
-@use './BoardGames/_board-games.scss';
-@use './Dev/_dev.scss';
-@use './Diet/_diet.scss';
-@use './UsernameGenerator/_username-generator.scss';
+    aside {
+        width: max-content;
+    }
 
-* {
-    /* font-family: 'VT323', monospace; */
-    font-family: 'Consolas', monospace;
+    .mobile-navbar-menu-closed {
+        display: none;
+    }
 
-    --main-background-color: gray;
-    --primary-color: blue;
-    --secondary-color: blue;
-    --accent-color: teal;
-    --text-color: white;
-    --link-color: lightblue;
-    --link-color-visited: violet;
+    .closed {
+        display: none;
+    }
 
-    padding: 0;
-    margin: 0;
+    .opened {
+        display: inline;
+    }
+
+    .backdrop {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 100vw;
+        backdrop-filter: blur(1px);
+        background-color: rgba(0, 0, 0, 0.3);
+
+    }
+    nav {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: max-content;
+        background-color: var(--background-color);
+        padding: 20px;
+    }
 }
 
-body {
-    background-color: var(--main-background-color);
-    color: var(--text-color);
+
+.desktop-navbar {
+    display: none;
 }
 
-a:link {
-    color: var(--link-color);
+@media screen and (min-width: 992px) {
+    .mobile-navbar {
+        display: none;
+    }
+
+    .desktop-navbar {
+        display: flex;
+    }
 }
 
-a:visited {
-    color: var(--link-color-visited);
-}
-
-p {
-    font-size: 16px;
-    margin-top: 24px;
-}
