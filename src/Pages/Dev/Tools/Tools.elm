@@ -2,13 +2,7 @@ module Pages.Dev.Tools.Tools exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
-
-
-type alias Tool =
-    { id : Int
-    , title : String
-    , text : String
-    }
+import Pages.Dev.Tools.Tool exposing (Tool)
 
 
 type alias Model =
