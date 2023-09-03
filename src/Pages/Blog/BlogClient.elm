@@ -1,4 +1,4 @@
-module Pages.Blog.BlogClient exposing (..)
+module Pages.Blog.BlogClient exposing (getBlogEntries, postBlogEntry, putBlogEntry)
 
 import Http
 import Json.Decode

@@ -1,4 +1,4 @@
-module Pages.Dev.Tools.Tool exposing (..)
+module Pages.Dev.Tools.Tool exposing (Tool)
 
 type alias Tool =
     { id : Int

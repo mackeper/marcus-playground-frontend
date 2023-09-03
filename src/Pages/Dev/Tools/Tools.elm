@@ -1,4 +1,4 @@
-module Pages.Dev.Tools.Tools exposing (..)
+module Pages.Dev.Tools.Tools exposing (Model, Msg, init, update, subscriptions, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (class)

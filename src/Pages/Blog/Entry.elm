@@ -1,4 +1,4 @@
-module Pages.Blog.Entry exposing (..)
+module Pages.Blog.Entry exposing (Entry)
 
 import Modules.Date exposing (Date)
 

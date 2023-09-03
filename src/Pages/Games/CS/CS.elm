@@ -1,4 +1,4 @@
-module Pages.Games.CS.CS exposing (Model, Msg(..), init, subscriptions, update, view)
+module Pages.Games.CS.CS exposing (Model, Msg, init, subscriptions, update, view)
 
 import Html exposing (..)
 import Modules.HtmlUtils as HtmlUtils

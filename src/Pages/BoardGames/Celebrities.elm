@@ -1,4 +1,4 @@
-module Pages.BoardGames.Celebrities exposing (Model, Msg(..), gameInfo, init, subscriptions, update, view)
+module Pages.BoardGames.Celebrities exposing (Model, Msg, gameInfo, init, subscriptions, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

@@ -1,10 +1,11 @@
-module Pages.BoardGames.Spy exposing (Model, Msg(..), gameInfo, init, subscriptions, update, view)
+module Pages.BoardGames.Spy exposing (Model, Msg, gameInfo, init, subscriptions, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pages.BoardGames.GameInfo exposing (GameInfo)
 
 
+gameInfo : GameInfo
 gameInfo =
     GameInfo "Spyfall" "https://www.spyfall.app/" "png" 2 10 10 8 5 5
 
