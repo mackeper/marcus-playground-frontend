@@ -105,5 +105,8 @@ viewEntry entry =
             , h3 [] [ text (formatDate entry.createdAt) ]
             , p [] (viewTags entry)
             ]
-        , p [] (HtmlUtils.textHtml (viewContent entry.content))
+        , details []
+            [ summary [] [ text "‎" ]
+            , p [] (HtmlUtils.textHtml (viewContent entry.content))
+            ] 
         ]
