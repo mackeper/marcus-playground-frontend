@@ -1,8 +1,13 @@
 module Pages.BoardGames.GameInfo exposing (GameInfo)
 
 
+type alias GameId =
+    String
+
+
 type alias GameInfo =
-    { name : String
+    { id : GameId
+    , name : String
     , description : String
     , image : String
     , minPlayers : Int

@@ -1,4 +1,4 @@
-module Pages.Blog.Blog exposing (Model, Msg, init, update, subscriptions, view, viewEntry)
+module Pages.Blog.Blog exposing (Model, Msg, init, subscriptions, update, view, viewEntry)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

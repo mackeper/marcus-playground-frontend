@@ -7,7 +7,7 @@ import Pages.BoardGames.GameInfo exposing (GameInfo)
 
 gameInfo : GameInfo
 gameInfo =
-    GameInfo "Spyfall" "https://www.spyfall.app/" "png" 2 10 10 8 5 5
+    GameInfo "spyfall" "Spyfall" "https://www.spyfall.app/" "png" 2 10 10 8 5 5
 
 
 type alias Model =
@@ -44,6 +44,5 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div []
-        [ text model.text1
-        , text model.text2
+        [ text "Spyfall"
         ]
