@@ -1,6 +1,8 @@
 module Modules.Date exposing (..)
 
 import Iso8601
+import Json.Decode
+import Json.Encode
 import Time
 
 
@@ -8,6 +10,23 @@ type alias Date =
     { time : Time.Posix
     , zone : Time.Zone
     }
+
+
+dateFromMs : Int -> Date
+dateFromMs posixInMs =
+    Date (Time.millisToPosix posixInMs) Time.utc
+
+
+decodeDate : Json.Decode.Decoder Date
+decodeDate =
+    Json.Decode.int
+        |> Json.Decode.andThen (\ms -> Json.Decode.succeed (Time.millisToPosix ms))
+        |> Json.Decode.andThen (\posix -> Json.Decode.succeed (Date posix Time.utc))
+
+
+encodeDate : Date -> Json.Encode.Value
+encodeDate date =
+    Json.Encode.int (Time.posixToMillis date.time)
 
 
 formatMonth : Time.Month -> String

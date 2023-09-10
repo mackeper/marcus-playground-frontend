@@ -2,7 +2,7 @@ module Pages.BoardGames.BoardGamesList exposing (Model, Msg, init, subscriptions
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Pages.BoardGames.Celebrities as Celebrities
+import Pages.BoardGames.Celebrities.Main as Celebrities
 import Pages.BoardGames.GameInfo exposing (GameInfo)
 import Pages.BoardGames.Spy as Spy
 

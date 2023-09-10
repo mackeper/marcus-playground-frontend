@@ -1,4 +1,4 @@
-module Pages.UsernameGenerator.UsernameGenerator exposing (Category, Model, Msg, init, update, view)
+module Pages.UsernameGenerator.UsernameGenerator exposing (Category, Model, Msg(..), init, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

@@ -1,11 +1,11 @@
-module Pages.BoardGames.BoardGames exposing (Model, Msg, init, subscriptions, update, view)
+module Pages.BoardGames.Main exposing (Model, Msg, init, subscriptions, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Pages.BoardGames.Celebrities as Celebrities
-import Pages.BoardGames.Spy as Spy
 import Pages.BoardGames.BoardGamesList as BoardGamesList
+import Pages.BoardGames.Celebrities.Main as Celebrities
 import Pages.BoardGames.Route as Route exposing (Route(..))
+import Pages.BoardGames.Spy as Spy
 
 
 type alias Model =
@@ -15,8 +15,7 @@ type alias Model =
 
 
 type Msg
-    = Msg1
-    | BoardGamesListMsg BoardGamesList.Msg
+    = BoardGamesListMsg BoardGamesList.Msg
     | CelebritiesMsg Celebrities.Msg
     | SpyMsg Spy.Msg
 
@@ -28,21 +27,21 @@ type Game
     | Spy Spy.Model
 
 
-currentGame : (Model, Cmd Msg) -> ( Model, Cmd Msg )
-currentGame (model, cmds) =
+currentGame : ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+currentGame ( model, cmds ) =
     let
         ( game, gameCmds ) =
             case model.route of
-                Route.Celebrities ->
-                    Celebrities.init |> initTo Celebrities CelebritiesMsg
-
                 Route.GameList ->
                     BoardGamesList.init |> initTo BoardGamesList BoardGamesListMsg
+
+                Route.Celebrities route ->
+                    Celebrities.init route |> initTo Celebrities CelebritiesMsg
 
                 Route.Spyfall ->
                     Spy.init |> initTo Spy SpyMsg
     in
-    ({model | game = game}, gameCmds)
+    ( { model | game = game }, gameCmds )
 
 
 init : Route -> ( Model, Cmd Msg )
@@ -53,7 +52,7 @@ init route =
             , route = route
             }
     in
-    currentGame (model, Cmd.none)
+    currentGame ( model, Cmd.none )
 
 
 initTo : (otherModel -> Game) -> (otherMsg -> Msg) -> ( otherModel, Cmd otherMsg ) -> ( Game, Cmd Msg )
@@ -63,7 +62,7 @@ initTo toModel toMsg ( model, cmd ) =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case (msg, model.game) of
+    case ( msg, model.game ) of
         ( BoardGamesListMsg subMsg, BoardGamesList pageModel ) ->
             BoardGamesList.update subMsg pageModel |> updateTo model BoardGamesList BoardGamesListMsg
 
@@ -74,7 +73,7 @@ update msg model =
             Spy.update subMsg pageModel |> updateTo model Spy SpyMsg
 
         ( _, _ ) ->
-            Debug.todo "branch '( _, _ )' not implemented"
+            ( model, Cmd.none )
 
 
 updateTo : Model -> (oldModel -> Game) -> (oldMsg -> Msg) -> ( oldModel, Cmd oldMsg ) -> ( Model, Cmd Msg )
@@ -86,17 +85,12 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
-viewBoardGamesMenu : Html Msg
-viewBoardGamesMenu =
-    div [ class "board-games-menu" ]
-        [ h1 [] [ text "Board Games" ]
-        ]
 
 viewGame : Game -> Html Msg
 viewGame game =
     case game of
         NotFound ->
-            div [] [ text "Not found" ]
+            div [] [ text "Board game not found!" ]
 
         BoardGamesList model ->
             BoardGamesList.view model |> Html.map BoardGamesListMsg
@@ -107,9 +101,9 @@ viewGame game =
         Spy model ->
             Spy.view model |> Html.map SpyMsg
 
+
 view : Model -> Html Msg
 view model =
     div [ class "board-games" ]
-        [ viewBoardGamesMenu
-        , viewGame model.game
+        [ viewGame model.game
         ]

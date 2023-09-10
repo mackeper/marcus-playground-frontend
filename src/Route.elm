@@ -1,8 +1,8 @@
 module Route exposing (Route(..), parseUrl)
 
+import Pages.BoardGames.Route as BoardGamesRoute
 import Url exposing (Url)
 import Url.Parser exposing (..)
-import Pages.BoardGames.Route as BoardGamesRoute
 
 
 type Route
@@ -42,7 +42,5 @@ matchRoute =
         , map GamesCS (s "games" </> s "cs")
         , map UsernameGenerator (s "usernamegenerator")
         , map Tracker (s "tracker")
-        -- , map (\str -> BoardGames (Just str)) (s "boardgames" </> string)
-        -- , map (BoardGames Nothing) (s "boardgames")
         , map BoardGames (s "boardgames" </> BoardGamesRoute.matchRoute)
         ]

@@ -9,7 +9,7 @@ import Html.Events exposing (onClick)
 import Pages.About.About as About
 import Pages.Blog.Blog as Blog
 import Pages.Blog.NewEntry as BlogNewEntry
-import Pages.BoardGames.BoardGames as BoardGames
+import Pages.BoardGames.Main as BoardGames
 import Pages.Dev.Tools.Tools as DevTools
 import Pages.Diet.Diet as Diet
 import Pages.Games.CS.CS as GamesCS
@@ -177,7 +177,7 @@ update msg model =
         ( BlogNewEntryMsg subMsg, BlogNewEntry pageModel ) ->
             BlogNewEntry.update subMsg pageModel |> updateTo model BlogNewEntry BlogNewEntryMsg
 
-        ( BoardGamesMsg subMsg, BoardGames pageModel) ->
+        ( BoardGamesMsg subMsg, BoardGames pageModel ) ->
             BoardGames.update subMsg pageModel |> updateTo model BoardGames BoardGamesMsg
 
         ( DietMsg subMsg, Diet pageModel ) ->
@@ -308,6 +308,7 @@ viewNavbarMenu =
         , viewLink "About" "/about"
         ]
     ]
+
 
 viewPage : Model -> Html Msg
 viewPage model =
