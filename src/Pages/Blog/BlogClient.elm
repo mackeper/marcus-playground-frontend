@@ -1,7 +1,7 @@
-module Pages.Blog.BlogClient exposing (getBlogEntries, postBlogEntry, putBlogEntry)
+module Pages.Blog.BlogClient exposing (getBlogEntries, getBlogErrorMessage, postBlogEntry, putBlogEntry)
 
 import Http
-import Modules.Client exposing (getList, post, put)
+import Modules.Client exposing (getErrorMessage, getList, post, put)
 import Pages.Blog.Entry exposing (Entry, entryDecoder, entryEncoder)
 
 
@@ -23,3 +23,8 @@ postBlogEntry msg entry =
 putBlogEntry : (Result Http.Error () -> msg) -> Entry -> Cmd msg
 putBlogEntry msg entry =
     put msg entryEncoder entry (url ++ "/" ++ String.fromInt entry.id)
+
+
+getBlogErrorMessage : Http.Error -> String
+getBlogErrorMessage error =
+    getErrorMessage error "Get blog entries failed."

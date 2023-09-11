@@ -10,9 +10,12 @@ import Pages.Blog.Entry exposing (Entry)
 import Platform.Cmd as Cmd
 import Time
 
+
 type BlogState
     = Loading
     | Loaded
+    | Error String
+
 
 type alias Model =
     { entries : List Entry
@@ -24,45 +27,27 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [] "" Time.utc Loading, BlogClient.getBlogEntries DataReceived )
+    ( Model [] "" Time.utc Loading, BlogClient.getBlogEntries GetBlogEntriesResponse )
 
 
 type Msg
-    = SendHttpRequest
-    | DataReceived (Result Http.Error (List Entry))
+    = SendGetBlogEntriesRequest
+    | GetBlogEntriesResponse (Result Http.Error (List Entry))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        SendHttpRequest ->
-            ( model, BlogClient.getBlogEntries DataReceived )
+        SendGetBlogEntriesRequest ->
+            ( model, BlogClient.getBlogEntries GetBlogEntriesResponse )
 
-        DataReceived result ->
-            let
-                (loadedModel, loadedCmds) =
-                    case result of
-                        Ok entries ->
-                            ( { model | entries = entries, test = "" }, Cmd.none )
+        GetBlogEntriesResponse result ->
+            case result of
+                Ok entries ->
+                    ( { model | entries = entries, state = Loaded }, Cmd.none )
 
-                        Err error ->
-                            case error of
-                                BadUrl errorMsg ->
-                                    ( { model | test = "Error (BadUrl): failed to fetch blog entries. " ++ errorMsg }, Cmd.none )
-
-                                Timeout ->
-                                    ( { model | test = "Error (Timeout): failed to fetch blog entries." }, Cmd.none )
-
-                                NetworkError ->
-                                    ( { model | test = "Error (NetworkError): failed to fetch blog entries." }, Cmd.none )
-
-                                BadStatus errorCode ->
-                                    ( { model | test = "Error (BadStatus): failed to fetch blog entries. " ++ String.fromInt errorCode }, Cmd.none )
-
-                                BadBody errorMsg ->
-                                    ( { model | test = "Error (BadBody): failed to fetch blog entries. " ++ errorMsg }, Cmd.none )
-            in
-            ( {loadedModel | state = Loaded }, loadedCmds )
+                Err error ->
+                    ( { model | state = Error (BlogClient.getBlogErrorMessage error) }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -75,11 +60,12 @@ view model =
     case model.state of
         Loading ->
             article [ attribute "aria-busy" "true" ] [ text "Loading..." ]
+
         Loaded ->
-            div [ class "blog" ]
-                [ h1 [] [ text model.test ]
-                , div [] (viewPosts model)
-                ]
+            div [ class "blog" ] (viewPosts model)
+
+        Error error ->
+            article [] [ text error ]
 
 
 viewPosts : Model -> List (Html Msg)
@@ -106,7 +92,7 @@ viewEntry entry =
             , p [] (viewTags entry)
             ]
         , details []
-            [ summary [] [ text "‎" ]
+            [ summary [] [ text "\u{200E}" ]
             , p [] (HtmlUtils.textHtml (viewContent entry.content))
-            ] 
+            ]
         ]
