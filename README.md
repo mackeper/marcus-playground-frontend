@@ -28,7 +28,7 @@ Frontend 🌍 for realmoneycompany.com
 
 ### Build :hammer:
 
-`.\build.ps1`
+`.\build.ps1`, will build to `./out`
 
 ### Test :white_check_mark:
 
@@ -38,7 +38,12 @@ Frontend 🌍 for realmoneycompany.com
 
 Run both these in seperate terminals:  
 `live-server --port=8080 --entry-file=./out/index.html`  
-`.\watcher.ps11`, all output files will build to `./out/`
+`.\watcher.ps1`
+
+### Deploy :rocket:
+
+Assumes you have access to the server and have setup ssh keys.
+`.\publish.ps1`
 
 ## Roadmap :world_map:
 
