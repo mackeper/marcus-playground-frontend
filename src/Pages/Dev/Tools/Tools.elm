@@ -2,6 +2,7 @@ module Pages.Dev.Tools.Tools exposing (Model, Msg, init, subscriptions, update, 
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
+import List.Split
 import Pages.Dev.Tools.Tool exposing (Tool)
 
 
@@ -38,16 +39,16 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "dev-tools" ]
-        (viewPosts model)
+        (viewTools model)
 
 
-viewPosts : Model -> List (Html msg)
-viewPosts model =
-    List.map viewPost model.tools
+viewTools : Model -> List (Html msg)
+viewTools model =
+    List.map (\x -> div [ class "grid" ] x) (List.Split.chunksOfLeft 3 (List.map viewTool model.tools))
 
 
-viewPost : Tool -> Html msg
-viewPost post =
+viewTool : Tool -> Html msg
+viewTool post =
     article [ class "tool" ]
         [ h1 [] [ text post.title ]
         , div [] [ text post.text ]

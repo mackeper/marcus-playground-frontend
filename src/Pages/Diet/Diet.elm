@@ -2,6 +2,7 @@ module Pages.Diet.Diet exposing (Model, Msg, init, subscriptions, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import List.Split
 import Pages.Diet.Micronutrient as Micronutrient exposing (Micronutrient, getMicronutrients)
 
 
@@ -45,9 +46,14 @@ viewMicronutrient micronutrient =
         ]
 
 
+viewMicronutrients : List Micronutrient -> List (Html msg)
+viewMicronutrients micronutrients =
+    List.map (\x -> div [ class "grid" ] x) (List.Split.chunksOfLeft 3 (List.map viewMicronutrient micronutrients))
+
+
 view : Model -> Html msg
 view model =
-    div [ class "diet" ] (List.map viewMicronutrient model.micronutrients)
+    div [ class "diet" ] (viewMicronutrients model.micronutrients)
 
 
 
