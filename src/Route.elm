@@ -13,6 +13,7 @@ type Route
     | DevTools
     | Diet
     | GamesCS
+    | GamesCookieClicker
     | Home
     | UsernameGenerator
     | Tracker
@@ -40,6 +41,7 @@ matchRoute =
         , map DevTools (s "dev" </> s "tools")
         , map Diet (s "diet")
         , map GamesCS (s "games" </> s "cs")
+        , map GamesCookieClicker (s "games" </> s "cookieclicker")
         , map UsernameGenerator (s "usernamegenerator")
         , map Tracker (s "tracker")
         , map BoardGames (s "boardgames" </> BoardGamesRoute.matchRoute)

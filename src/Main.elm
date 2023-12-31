@@ -13,6 +13,7 @@ import Pages.BoardGames.Main as BoardGames
 import Pages.Dev.Tools.Tools as DevTools
 import Pages.Diet.Diet as Diet
 import Pages.Games.CS.CS as GamesCS
+import Pages.Games.CookieClicker as GamesCookieClicker
 import Pages.Home.Home as Home
 import Pages.Tracker.Tracker as Tracker
 import Pages.UsernameGenerator.UsernameGenerator as UsernameGenerator
@@ -66,6 +67,7 @@ type Page
     | Diet Diet.Model
     | DevTools DevTools.Model
     | GamesCS GamesCS.Model
+    | GamesCookieClicker GamesCookieClicker.Model
     | UsernameGenerator UsernameGenerator.Model
     | Tracker Tracker.Model
     | BoardGames BoardGames.Model
@@ -97,6 +99,7 @@ type Msg
     | DietMsg Diet.Msg
     | DevToolsMsg DevTools.Msg
     | GamesCSMsg GamesCS.Msg
+    | GamesCookieClickerMsg GamesCookieClicker.Msg
     | UsernameGeneratorMsg UsernameGenerator.Msg
     | TrackerMsg Tracker.Msg
     | BoardGamesMsg BoardGames.Msg
@@ -133,6 +136,9 @@ initCurrentPage ( model, existingCmds ) =
 
                 Route.GamesCS ->
                     GamesCS.init |> initTo GamesCS GamesCSMsg
+
+                Route.GamesCookieClicker ->
+                    GamesCookieClicker.init |> initTo GamesCookieClicker GamesCookieClickerMsg
 
                 Route.Tracker ->
                     Tracker.init |> initTo Tracker TrackerMsg
@@ -191,6 +197,9 @@ update msg model =
 
         ( GamesCSMsg subMsg, GamesCS pageModel ) ->
             GamesCS.update subMsg pageModel |> updateTo model GamesCS GamesCSMsg
+
+        ( GamesCookieClickerMsg subMsg, GamesCookieClicker pageModel ) ->
+            GamesCookieClicker.update subMsg pageModel |> updateTo model GamesCookieClicker GamesCookieClickerMsg
 
         ( TrackerMsg subMsg, Tracker pageModel ) ->
             Tracker.update subMsg pageModel |> updateTo model Tracker TrackerMsg
@@ -292,6 +301,7 @@ viewNavbarMenu =
         , viewDropdown
             "Games"
             [ viewLink "CS" "/games/cs"
+            , viewLink "Cookie Clicker" "/games/cookieclicker"
             , viewLink "Idleon" "/games/idleon"
             ]
         , viewDropdown
@@ -336,6 +346,9 @@ viewPage model =
 
         GamesCS pageModel ->
             GamesCS.view pageModel |> Html.map GamesCSMsg
+
+        GamesCookieClicker pageModel ->
+            GamesCookieClicker.view pageModel |> Html.map GamesCookieClickerMsg
 
         UsernameGenerator pageModel ->
             UsernameGenerator.view pageModel |> Html.map UsernameGeneratorMsg
