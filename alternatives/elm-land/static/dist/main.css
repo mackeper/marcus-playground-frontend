@@ -1,0 +1,48 @@
+.mobile-navbar {
+  display: flex;
+}
+.mobile-navbar aside {
+  width: max-content;
+}
+.mobile-navbar .mobile-navbar-menu-closed {
+  display: none;
+}
+.mobile-navbar .closed {
+  display: none;
+}
+.mobile-navbar .opened {
+  display: inline;
+}
+.mobile-navbar .backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  backdrop-filter: blur(1px);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.mobile-navbar nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: max-content;
+  background-color: var(--background-color);
+  padding: 20px;
+}
+
+.desktop-navbar {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .mobile-navbar {
+    display: none;
+  }
+  .desktop-navbar {
+    display: flex;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,21 @@
+{
+    "name": "marcus-playground-frontend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm i && npm run dev",
+        "dev": "concurrently \"npm:dev:*\"",
+        "dev:sass": "sass -w static/scss/main.scss static/dist/main.css",
+        "dev:elm-land": "elm-land server",
+        "build": "npm run build:sass && npm run build:elm-land",
+        "build:sass": "sass static/scss/main.scss static/dist/main.css",
+        "build:elm-land": "elm-land build"
+    },
+    "author": "Marcus",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^8.2.2",
+        "scss": "^0.2.4"
+    }
+}
