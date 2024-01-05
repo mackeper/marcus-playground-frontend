@@ -1,6 +1,6 @@
 module Pages.UsernameGenerator exposing (Model, Msg, page)
 
-import Api
+import Api.Client
 import Api.UsernameGenerator
 import Effect exposing (Effect)
 import Html exposing (..)
@@ -40,7 +40,7 @@ type alias Username =
 
 
 type alias Model =
-    { usernameData : Api.Data (List Username)
+    { usernameData : Api.Client.Data (List Username)
     , categories : List Category
     , count : Int
     }
@@ -54,7 +54,7 @@ type alias Category =
 
 init : () -> ( Model, Effect Msg )
 init () =
-    ( { usernameData = Api.Loading
+    ( { usernameData = Api.Client.Loading
       , categories =
             [ { name = "Adjectives", enabled = True }
             , { name = "Animals", enabled = True }
@@ -107,12 +107,12 @@ update msg model =
             )
 
         UsernameGeneratorResponded (Ok listOfUsernames) ->
-            ( { model | usernameData = Api.Success listOfUsernames }
+            ( { model | usernameData = Api.Client.Success listOfUsernames }
             , Effect.none
             )
 
         UsernameGeneratorResponded (Err error) ->
-            ( { model | usernameData = Api.Failure error }
+            ( { model | usernameData = Api.Client.Failure error }
             , Effect.none
             )
 
@@ -169,15 +169,15 @@ viewCategories model =
 viewUsernames : Model -> Html Msg
 viewUsernames model =
     case model.usernameData of
-        Api.Loading ->
+        Api.Client.Loading ->
             p [ attribute "aria-busy" "true" ]
                 [ text "Loading..." ]
 
-        Api.Failure error ->
+        Api.Client.Failure error ->
             p []
-                [ text (Api.toUserFriendlyMessage error) ]
+                [ text (Api.Client.getErrorMessage error "") ]
 
-        Api.Success usernames ->
+        Api.Client.Success usernames ->
             p []
                 [ ul
                     []

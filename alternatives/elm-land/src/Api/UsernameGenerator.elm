@@ -1,5 +1,6 @@
 module Api.UsernameGenerator exposing (getUsernames)
 
+import Api.Client
 import Http
 import Json.Decode
 
@@ -11,28 +12,28 @@ getUsernames :
     }
     -> Cmd msg
 getUsernames options =
-    Http.get
-        { url =
-            "https://usernamegenerator.realmoneycompany.com?"
-                ++ "count="
-                ++ String.fromInt options.count
-                ++ "&"
-                ++ String.join "&"
-                    (List.map
-                        (\c ->
-                            String.replace " " "_" (String.toLower c.name)
-                                ++ "="
-                                ++ (if c.enabled then
-                                        "true"
+    Api.Client.get
+        options.onResponse
+        decoder
+        ("https://usernamegenerator.realmoneycompany.com?"
+            ++ "count="
+            ++ String.fromInt options.count
+            ++ "&"
+            ++ String.join "&"
+                (List.map
+                    (\c ->
+                        String.replace " " "_" (String.toLower c.name)
+                            ++ "="
+                            ++ (if c.enabled then
+                                    "true"
 
-                                    else
-                                        "false"
-                                   )
-                        )
-                        options.categories
+                                else
+                                    "false"
+                               )
                     )
-        , expect = Http.expectJson options.onResponse decoder
-        }
+                    options.categories
+                )
+        )
 
 
 decoder : Json.Decode.Decoder (List Username)
