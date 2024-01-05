@@ -1,4 +1,4 @@
-module Pages.Blog exposing (Model, Msg, page)
+module Pages.Blog exposing (Model, Msg, page, viewEntry)
 
 import Api.Blog
 import Api.Client
