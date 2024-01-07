@@ -21,14 +21,14 @@ Frontend 🌍 for realmoneycompany.com
   - Windows: `choco install nodejs`
 - [Elm](https://guide.elm-lang.org/install/elm.html)
   - Windows: `choco install elm-platform`
-- [Live-server](https://www.npmjs.com/package/live-server)
-  - Windows: `npm install -g live-server`
+- [Elm land](https://elm.land/guide/)
+  - Windows: `npm install -g elm-land@latest`
 - [Sass](https://sass-lang.com/install)
   - Windows: `choco install sass`
 
 ### Build :hammer:
 
-`.\build.ps1`, will build to `./out`
+`elm-land build`
 
 ### Test :white_check_mark:
 
@@ -36,14 +36,11 @@ Frontend 🌍 for realmoneycompany.com
 
 ### Run local :computer:
 
-Run both these in seperate terminals:  
-`live-server --port=8080 --entry-file=./out/index.html`  
-`.\watcher.ps1`
+`npm start`
 
 ### Deploy :rocket:
 
-Assumes you have access to the server and have setup ssh keys.
-`.\publish.ps1`
+todo
 
 ## Roadmap :world_map:
 
