@@ -34,7 +34,8 @@ toLayout model =
 
 
 type alias TodoModel =
-    { items : List String }
+    { items : List String
+    , newItem : String}
 
 
 type alias CalendarModel =
@@ -61,18 +62,19 @@ type alias Model =
 init : () -> ( Model, Effect Msg )
 init () =
     ( { todo =
-            { items = [ "item1", "item2" ] }
+            { items = [ "item1", "item2" ]
+            , newItem = ""}
       , calendar =
             { events = [ "event1", "event2" ] }
       , sl =
             { events = [ "sl1", "sl2" ] }
       , mealPlan =
             { meals =
-                [ ( "Monday", "meal1" )
-                , ( "Tuesday", "meal2" )
-                , ( "Wednesday", "meal3" )
-                , ( "Thursday", "meal4" )
-                , ( "Friday", "meal5" )
+                [ ( "Monday", "Hamburger / red lentil burger" )
+                , ( "Tuesday", "Fried rice" )
+                , ( "Wednesday", "Tofu pasta" )
+                , ( "Thursday", "Panncakes" )
+                , ( "Friday", "Tacos / Wrap" )
                 ]
             }
       , note = "note"
@@ -87,6 +89,8 @@ init () =
 
 type Msg
     = NoOp
+    | TodoAddItem
+    | TodoOnInput String
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -96,6 +100,12 @@ update msg model =
             ( model
             , Effect.none
             )
+        TodoAddItem ->
+            let todo = model.todo
+            in ({model | todo = {todo | items = todo.newItem :: todo.items, newItem = ""}}, Effect.none)
+        TodoOnInput value ->
+           let todo = model.todo
+           in ({model | todo = {todo | newItem = value}}, Effect.none)
 
 
 
@@ -117,8 +127,8 @@ viewTodo model =
         [ text "Todo"
         , Html.form []
             [ fieldset [ role "group" ]
-                [ input [ type_ "text", placeholder "Add item" ] []
-                , input [ type_ "submit", value "+" ] []
+                [ input [ type_ "text", placeholder "Add item", value model.todo.newItem, onInput TodoOnInput ] []
+                , input [ type_ "button", value "+", onClick TodoAddItem ] []
                 ]
             ]
         , ul [] (List.map (\item -> div [] [ label [] [ input [ type_ "checkbox" ] [], text item ] ]) model.todo.items)
@@ -153,7 +163,12 @@ viewMealPlan : Model -> Html Msg
 viewMealPlan model =
     div []
         [ text "Meal Plan"
-        , ul [] (List.map (\( day, meal ) -> li [] [ text day, text meal ]) model.mealPlan.meals)
+        , table [] (List.map (\( day, meal ) ->
+            tr []
+                [ td [] [text day]
+                , td [] [text meal]
+                ]
+            ) model.mealPlan.meals)
         ]
 
 
