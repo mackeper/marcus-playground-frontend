@@ -6,10 +6,10 @@
     "scripts": {
         "start": "npm i && npm run dev",
         "dev": "concurrently \"npm:dev:*\"",
-        "dev:sass": "sass -w static/scss/main.scss static/dist/main.css",
+        "dev:sass": "sass -w styles/scss/main.scss dist/main.css",
         "dev:elm-land": "elm-land server",
         "build": "npm run build:sass && npm run build:elm-land",
-        "build:sass": "sass static/scss/main.scss static/dist/main.css",
+        "build:sass": "sass styles/scss/main.scss dist/main.css",
         "build:elm-land": "elm-land build"
     },
     "author": "Marcus",
