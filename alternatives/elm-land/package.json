@@ -16,6 +16,6 @@
     "license": "ISC",
     "devDependencies": {
         "concurrently": "^8.2.2",
-        "scss": "^0.2.4"
+        "sass": "^1.77.8"
     }
 }

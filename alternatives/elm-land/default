@@ -1,0 +1,239 @@
+server {
+	root /var/www/html;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name realmoneycompany.com www.realmoneycompany.com;
+
+	location / {
+		try_files $uri /index.html;
+	}
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+
+
+
+
+
+}
+
+server {
+	root /var/www/v2;
+	index index.html index.htm index.nginx-debian.html;
+	server_name v2.realmoneycompany.com;
+	location / {
+		try_files $uri /index.html;
+	}
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+server {	
+	server_name blog.realmoneycompany.com;
+
+	location / {
+		proxy_pass http://127.0.0.1:5000;
+	}
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+
+}
+
+server {
+	server_name tracker.realmoneycompany.com;
+
+	location / {
+		proxy_pass http://127.0.0.1:5002;
+	}
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+
+}
+
+server {
+	server_name dev.realmoneycompany.com;
+
+	location / {
+		proxy_pass http://127.0.0.1:5003;
+	}
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+
+}
+
+server {
+	server_name usernamegenerator.realmoneycompany.com;
+
+	location / {
+		proxy_pass http://127.0.0.1:5004;
+	}
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}
+
+server {
+	server_name identity.realmoneycompany.com;
+
+	location / {
+		proxy_pass http://127.0.0.1:5005;
+	}
+
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/realmoneycompany.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/realmoneycompany.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+
+server {
+    if ($host = www.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name realmoneycompany.com www.realmoneycompany.com;
+    return 404; # managed by Certbot
+
+
+
+
+}
+
+server {
+    if ($host = blog.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+	
+	server_name blog.realmoneycompany.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+
+server {
+    if ($host = dev.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	server_name dev.realmoneycompany.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+
+server {
+    if ($host = tracker.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	server_name tracker.realmoneycompany.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+
+
+server {
+    if ($host = usernamegenerator.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	server_name usernamegenerator.realmoneycompany.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+
+
+server {
+    if ($host = identity.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	server_name identity.realmoneycompany.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+
+
+server {
+    if ($host = v2.realmoneycompany.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	server_name v2.realmoneycompany.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
