@@ -1,4 +1,4 @@
-npx elm-land build
+npm run build
 cp -r dist v2
 scp -r dist gcp:~/
 rm -r v2
