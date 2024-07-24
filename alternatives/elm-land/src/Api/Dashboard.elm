@@ -1,7 +1,7 @@
 module Api.Dashboard exposing (..)
 
 import Api.Client exposing (getErrorMessage, getList, post, put)
-import Common.Date exposing (Date, decodeDate, encodeDate)
+import Common.Date exposing (Date, decodeDate)
 import Http
 import Json.Decode
 import Json.Encode
@@ -54,4 +54,4 @@ putTodoEntry msg entry =
 
 getTodoErrorMessage : Http.Error -> String
 getTodoErrorMessage error =
-    getErrorMessage error "Get blog entries failed."
+    getErrorMessage error "Get todo entries failed."

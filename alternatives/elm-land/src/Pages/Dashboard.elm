@@ -2,7 +2,8 @@ module Pages.Dashboard exposing (Model, Msg, page)
 
 import Api.Client
 import Api.Dashboard
-import Common.Date exposing (dateFromMs)
+import Api.SL
+import Common.Date exposing (Date, dateFromMs, formatTimeWithoutSeconds, subtractDate)
 import Effect exposing (Effect)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -13,6 +14,8 @@ import Layouts exposing (Layout)
 import Page exposing (Page)
 import Route exposing (Route)
 import Shared
+import Task
+import Time
 import View exposing (View)
 
 
@@ -48,7 +51,9 @@ type alias CalendarModel =
 
 
 type alias SlModel =
-    { events : List String }
+    { departures : Api.Client.Data (List Api.SL.Departures)
+    , currentTime : Date
+    }
 
 
 type alias MealPlanModel =
@@ -73,7 +78,9 @@ init () =
       , calendar =
             { events = [ "event1", "event2" ] }
       , sl =
-            { events = [ "sl1", "sl2" ] }
+            { departures = Api.Client.Loading
+            , currentTime = Date (Time.millisToPosix 0) Time.utc
+            }
       , mealPlan =
             { meals =
                 [ ( "Monday", "Hamburger / red lentil burger" )
@@ -85,7 +92,12 @@ init () =
             }
       , note = "note"
       }
-    , Api.Dashboard.getTodoEntries GetTodoEntriesResponse |> Effect.sendCmd
+    , Cmd.batch
+        [ Api.Dashboard.getTodoEntries GetTodoEntriesResponse
+        , Api.SL.getEntries GetSLDeparturesRespose
+        , Task.perform GetCurrentTime Time.now
+        ]
+        |> Effect.sendCmd
     )
 
 
@@ -99,6 +111,8 @@ type Msg
     | TodoOnInput String
     | GetTodoEntriesResponse (Result Http.Error (List Api.Dashboard.TodoEntry))
     | PostTodoEntryResult (Result Http.Error Api.Dashboard.TodoEntry)
+    | GetSLDeparturesRespose (Result Http.Error (List Api.SL.Departures))
+    | GetCurrentTime Time.Posix
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -143,6 +157,27 @@ update msg model =
                     model.todo
             in
             ( { model | todo = { todo | items = Api.Client.Failure error } }, Effect.none )
+
+        GetSLDeparturesRespose (Ok departures) ->
+            let
+                sl =
+                    model.sl
+            in
+            ( { model | sl = { sl | departures = Api.Client.Success departures } }, Effect.none )
+
+        GetSLDeparturesRespose (Err error) ->
+            let
+                sl =
+                    model.sl
+            in
+            ( { model | sl = { sl | departures = Api.Client.Failure error } }, Effect.none )
+
+        GetCurrentTime time ->
+            let
+                sl =
+                    model.sl
+            in
+            ( { model | sl = { sl | currentTime = Date time (Time.customZone 120 []) } }, Api.SL.getEntries GetSLDeparturesRespose |> Effect.sendCmd )
 
 
 
@@ -193,11 +228,44 @@ viewCalendar model =
         ]
 
 
+viewSl2 : SlModel -> Html Msg
+viewSl2 model =
+    case model.departures of
+        Api.Client.Loading ->
+            text "Loading..."
+
+        Api.Client.Failure error ->
+            text (Api.SL.getErrorMessage error)
+
+        Api.Client.Success departures ->
+            ul []
+                [ li []
+                    [ text "Lektorsstigen"
+                    , ul
+                        []
+                        (List.map
+                            (\departure ->
+                                li
+                                    []
+                                    [ text departure.destination
+                                    , text " "
+                                    , ins [] [ text departure.display ]
+                                    , text " ("
+                                    , i [] [ text (formatTimeWithoutSeconds departure.expected) ]
+                                    , text ")"
+                                    ]
+                            )
+                            departures
+                        )
+                    ]
+                ]
+
+
 viewSl : Model -> Html Msg
 viewSl model =
     div []
         [ text "SL"
-        , ul [] (List.map (\event -> li [] [ text event ]) model.sl.events)
+        , viewSl2 model.sl
         ]
 
 

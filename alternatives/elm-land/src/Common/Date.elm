@@ -24,9 +24,22 @@ decodeDate =
         |> Json.Decode.andThen (\posix -> Json.Decode.succeed (Date posix Time.utc))
 
 
+decodeIso8601ToDateTime : Json.Decode.Decoder Date
+decodeIso8601ToDateTime =
+    Json.Decode.string
+        |> Json.Decode.andThen (\str -> Json.Decode.succeed (parseIso8601ToDateTime str))
+
+
 encodeDate : Date -> Json.Encode.Value
 encodeDate date =
     Json.Encode.int (Time.posixToMillis date.time)
+
+
+{-| TODO - handle timezones
+-}
+subtractDate : Date -> Date -> Date
+subtractDate date1 date2 =
+    dateFromMs (Time.posixToMillis date1.time - Time.posixToMillis date2.time - 120 * 60 * 1000)
 
 
 formatMonth : Time.Month -> String
@@ -119,3 +132,24 @@ formatDate date =
             String.fromInt (Time.toSecond date.zone date.time)
     in
     zfill hour ++ ":" ++ zfill minute ++ ":" ++ zfill second ++ " " ++ zfill day ++ "/" ++ month ++ "-" ++ year
+
+
+formatTime : Date -> String
+formatTime date =
+    let
+        second =
+            String.fromInt (Time.toSecond date.zone date.time)
+    in
+    formatTimeWithoutSeconds date ++ ":" ++ zfill second
+
+
+formatTimeWithoutSeconds : Date -> String
+formatTimeWithoutSeconds date =
+    let
+        hour =
+            String.fromInt (Time.toHour date.zone date.time)
+
+        minute =
+            String.fromInt (Time.toMinute date.zone date.time)
+    in
+    zfill hour ++ ":" ++ zfill minute
