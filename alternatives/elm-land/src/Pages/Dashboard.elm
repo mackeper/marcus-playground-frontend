@@ -1,10 +1,14 @@
 module Pages.Dashboard exposing (Model, Msg, page)
 
+import Api.Client
+import Api.Dashboard
+import Common.Date exposing (dateFromMs)
 import Effect exposing (Effect)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Attributes.Extra exposing (role)
 import Html.Events exposing (..)
+import Http
 import Layouts exposing (Layout)
 import Page exposing (Page)
 import Route exposing (Route)
@@ -34,8 +38,9 @@ toLayout model =
 
 
 type alias TodoModel =
-    { items : List String
-    , newItem : String}
+    { items : Api.Client.Data (List Api.Dashboard.TodoEntry)
+    , newItem : String
+    }
 
 
 type alias CalendarModel =
@@ -62,8 +67,9 @@ type alias Model =
 init : () -> ( Model, Effect Msg )
 init () =
     ( { todo =
-            { items = [ "item1", "item2" ]
-            , newItem = ""}
+            { items = Api.Client.Loading
+            , newItem = ""
+            }
       , calendar =
             { events = [ "event1", "event2" ] }
       , sl =
@@ -79,7 +85,7 @@ init () =
             }
       , note = "note"
       }
-    , Effect.none
+    , Api.Dashboard.getTodoEntries GetTodoEntriesResponse |> Effect.sendCmd
     )
 
 
@@ -91,6 +97,8 @@ type Msg
     = NoOp
     | TodoAddItem
     | TodoOnInput String
+    | GetTodoEntriesResponse (Result Http.Error (List Api.Dashboard.TodoEntry))
+    | PostTodoEntryResult (Result Http.Error Api.Dashboard.TodoEntry)
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -100,12 +108,41 @@ update msg model =
             ( model
             , Effect.none
             )
+
         TodoAddItem ->
-            let todo = model.todo
-            in ({model | todo = {todo | items = todo.newItem :: todo.items, newItem = ""}}, Effect.none)
+            ( model, Api.Dashboard.postTodoEntry PostTodoEntryResult (Api.Dashboard.TodoEntry model.todo.newItem False (dateFromMs 0) Maybe.Nothing) |> Effect.sendCmd )
+
+        PostTodoEntryResult (Ok _) ->
+            let
+                todo =
+                    model.todo
+            in
+            ( { model | todo = { todo | newItem = "" } }, Api.Dashboard.getTodoEntries GetTodoEntriesResponse |> Effect.sendCmd )
+
+        PostTodoEntryResult (Err _) ->
+            ( model, Effect.none )
+
+        -- add todo item
         TodoOnInput value ->
-           let todo = model.todo
-           in ({model | todo = {todo | newItem = value}}, Effect.none)
+            let
+                todo =
+                    model.todo
+            in
+            ( { model | todo = { todo | newItem = value } }, Effect.none )
+
+        GetTodoEntriesResponse (Ok items) ->
+            let
+                todo =
+                    model.todo
+            in
+            ( { model | todo = { todo | items = Api.Client.Success items } }, Effect.none )
+
+        GetTodoEntriesResponse (Err error) ->
+            let
+                todo =
+                    model.todo
+            in
+            ( { model | todo = { todo | items = Api.Client.Failure error } }, Effect.none )
 
 
 
@@ -121,6 +158,19 @@ subscriptions model =
 -- VIEW
 
 
+viewTodo2 : Api.Client.Data (List Api.Dashboard.TodoEntry) -> Html Msg
+viewTodo2 items =
+    case items of
+        Api.Client.Loading ->
+            text "Loading..."
+
+        Api.Client.Failure error ->
+            text (Api.Dashboard.getTodoErrorMessage error)
+
+        Api.Client.Success items2 ->
+            ul [] (List.map (\item -> div [] [ label [] [ input [ type_ "checkbox" ] [], text item.title ] ]) items2)
+
+
 viewTodo : Model -> Html Msg
 viewTodo model =
     div []
@@ -131,7 +181,7 @@ viewTodo model =
                 , input [ type_ "button", value "+", onClick TodoAddItem ] []
                 ]
             ]
-        , ul [] (List.map (\item -> div [] [ label [] [ input [ type_ "checkbox" ] [], text item ] ]) model.todo.items)
+        , viewTodo2 model.todo.items
         ]
 
 
@@ -163,12 +213,16 @@ viewMealPlan : Model -> Html Msg
 viewMealPlan model =
     div []
         [ text "Meal Plan"
-        , table [] (List.map (\( day, meal ) ->
-            tr []
-                [ td [] [text day]
-                , td [] [text meal]
-                ]
-            ) model.mealPlan.meals)
+        , table []
+            (List.map
+                (\( day, meal ) ->
+                    tr []
+                        [ td [] [ text day ]
+                        , td [] [ text meal ]
+                        ]
+                )
+                model.mealPlan.meals
+            )
         ]
 
 

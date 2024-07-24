@@ -1,34 +1,39 @@
 module Api.Dashboard exposing (..)
 
 import Api.Client exposing (getErrorMessage, getList, post, put)
+import Common.Date exposing (Date, decodeDate, encodeDate)
 import Http
-import Json.Encode
 import Json.Decode
+import Json.Encode
 
 
 type alias TodoEntry =
-    { id : Int
-    , title : String
-    , description : String
+    { title : String
+    , isCompleted : Bool
+    , createdAt : Date
+    , completedAt : Maybe Date
     }
+
 
 url : String
 url =
     "https://dashboard.realmoneycompany.com/todo"
 
+
 entryDecoder : Json.Decode.Decoder TodoEntry
 entryDecoder =
-    Json.Decode.map3 TodoEntry
-        (Json.Decode.field "id" Json.Decode.int)
+    Json.Decode.map4 TodoEntry
         (Json.Decode.field "title" Json.Decode.string)
-        (Json.Decode.field "description" Json.Decode.string)
+        (Json.Decode.field "isCompleted" Json.Decode.bool)
+        (Json.Decode.field "createdAt" decodeDate)
+        (Json.Decode.maybe <| Json.Decode.field "completedAt" decodeDate)
+
 
 entryEncoder : TodoEntry -> Json.Encode.Value
 entryEncoder entry =
     Json.Encode.object
-        [ ( "id", Json.Encode.int entry.id )
-        , ( "title", Json.Encode.string entry.title )
-        , ( "description", Json.Encode.string entry.description )
+        [ ( "title", Json.Encode.string entry.title )
+        , ( "content", Json.Encode.string "" )
         ]
 
 
@@ -44,7 +49,7 @@ postTodoEntry msg entry =
 
 putTodoEntry : (Result Http.Error () -> msg) -> TodoEntry -> Cmd msg
 putTodoEntry msg entry =
-    put msg entryEncoder entry (url ++ "/" ++ String.fromInt entry.id)
+    put msg entryEncoder entry (url ++ "/" ++ String.fromInt 1)
 
 
 getTodoErrorMessage : Http.Error -> String
