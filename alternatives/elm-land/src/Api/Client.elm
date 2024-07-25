@@ -1,8 +1,9 @@
-module Api.Client exposing (Data(..), get, getErrorMessage, getList, post, put)
+module Api.Client exposing (Data(..), get, getErrorMessage, getList, post, put, putOnlyUrl)
 
 import Http
 import Json.Decode
 import Json.Encode
+import Layouts.Navbar exposing (Msg)
 
 
 type Data value
@@ -42,6 +43,19 @@ put msg encode data url =
         { method = "PUT"
         , url = url
         , body = Http.jsonBody (encode data)
+        , expect = Http.expectWhatever msg
+        , headers = []
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+putOnlyUrl : (Result Http.Error () -> msg) -> String -> Cmd msg
+putOnlyUrl msg url =
+    Http.request
+        { method = "PUT"
+        , url = url
+        , body = Http.emptyBody
         , expect = Http.expectWhatever msg
         , headers = []
         , timeout = Nothing

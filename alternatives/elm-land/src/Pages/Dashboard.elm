@@ -108,9 +108,11 @@ init () =
 type Msg
     = NoOp
     | TodoAddItem
+    | TodoCheckItem Api.Dashboard.TodoEntry Bool
     | TodoOnInput String
     | GetTodoEntriesResponse (Result Http.Error (List Api.Dashboard.TodoEntry))
     | PostTodoEntryResult (Result Http.Error Api.Dashboard.TodoEntry)
+    | CompleteTodoEntryResult (Result Http.Error ())
     | GetSLDeparturesRespose (Result Http.Error (List Api.SL.Departures))
     | GetCurrentTime Time.Posix
 
@@ -124,7 +126,7 @@ update msg model =
             )
 
         TodoAddItem ->
-            ( model, Api.Dashboard.postTodoEntry PostTodoEntryResult (Api.Dashboard.TodoEntry model.todo.newItem False (dateFromMs 0) Maybe.Nothing) |> Effect.sendCmd )
+            ( model, Api.Dashboard.postTodoEntry PostTodoEntryResult (Api.Dashboard.todoEntry model.todo.newItem) |> Effect.sendCmd )
 
         PostTodoEntryResult (Ok _) ->
             let
@@ -134,6 +136,18 @@ update msg model =
             ( { model | todo = { todo | newItem = "" } }, Api.Dashboard.getTodoEntries GetTodoEntriesResponse |> Effect.sendCmd )
 
         PostTodoEntryResult (Err _) ->
+            ( model, Effect.none )
+
+        TodoCheckItem todoEntry True ->
+            ( model, Api.Dashboard.completeTodoEntry CompleteTodoEntryResult todoEntry |> Effect.sendCmd )
+
+        TodoCheckItem todoEntry False ->
+            ( model, Api.Dashboard.uncompleteTodoEntry CompleteTodoEntryResult todoEntry |> Effect.sendCmd )
+
+        CompleteTodoEntryResult (Ok _) ->
+            ( model, Effect.none )
+
+        CompleteTodoEntryResult (Err _) ->
             ( model, Effect.none )
 
         -- add todo item
@@ -149,7 +163,7 @@ update msg model =
                 todo =
                     model.todo
             in
-            ( { model | todo = { todo | items = Api.Client.Success items } }, Effect.none )
+            ( { model | todo = { todo | items = Api.Client.Success (List.filter (\x -> not x.isCompleted) items) } }, Effect.none )
 
         GetTodoEntriesResponse (Err error) ->
             let
@@ -203,7 +217,7 @@ viewTodo2 items =
             text (Api.Dashboard.getTodoErrorMessage error)
 
         Api.Client.Success items2 ->
-            ul [] (List.map (\item -> div [] [ label [] [ input [ type_ "checkbox" ] [], text item.title ] ]) items2)
+            ul [] (List.map (\item -> div [] [ label [] [ input [ type_ "checkbox", onCheck (TodoCheckItem item) ] [], text item.title ] ]) items2)
 
 
 viewTodo : Model -> Html Msg
