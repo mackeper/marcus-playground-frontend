@@ -3,14 +3,14 @@ module Pages.Dashboard exposing (Model, Msg, page)
 import Api.Client
 import Api.Dashboard
 import Api.SL
-import Common.Date exposing (Date, dateFromMs, formatTimeWithoutSeconds, subtractDate)
+import Common.Date exposing (Date, formatTimeWithoutSeconds)
 import Effect exposing (Effect)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Attributes.Extra exposing (role)
 import Html.Events exposing (..)
 import Http
-import Layouts exposing (Layout)
+import Layouts
 import Page exposing (Page)
 import Route exposing (Route)
 import Shared
@@ -211,7 +211,7 @@ viewTodo2 : Api.Client.Data (List Api.Dashboard.TodoEntry) -> Html Msg
 viewTodo2 items =
     case items of
         Api.Client.Loading ->
-            text "Loading..."
+            div [ attribute "aria-busy" "true" ] [ text "Loading..." ]
 
         Api.Client.Failure error ->
             text (Api.Dashboard.getTodoErrorMessage error)
@@ -246,7 +246,7 @@ viewSl2 : SlModel -> Html Msg
 viewSl2 model =
     case model.departures of
         Api.Client.Loading ->
-            text "Loading..."
+            div [ attribute "aria-busy" "true" ] [ text "Loading..." ]
 
         Api.Client.Failure error ->
             text (Api.SL.getErrorMessage error)
