@@ -129,7 +129,7 @@ viewEntry entry =
             , h3 [] [ text (formatDate entry.createdAt) ]
             , p [] (viewTags entry)
             ]
-        , details []
+        , details [ Html.Attributes.attribute "open" "" ]
             [ summary [] [ text "\u{200E}" ]
             , p [] (HtmlUtils.textHtml (viewContent entry.content))
             ]

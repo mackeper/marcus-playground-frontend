@@ -3,6 +3,7 @@ module Pages.Dashboard exposing (Model, Msg, page)
 import Api.Client
 import Api.Dashboard
 import Api.SL
+import Common.Dashboard.Meals exposing (Meal, getAvailableMeals)
 import Common.Date exposing (Date, formatTimeWithoutSeconds)
 import Effect exposing (Effect)
 import Html exposing (..)
@@ -56,8 +57,15 @@ type alias SlModel =
     }
 
 
+days : List String
+days =
+    [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ]
+
+
 type alias MealPlanModel =
-    { meals : List ( String, String ) }
+    { meals : List ( String, Meal )
+    , availableMeals : List Meal
+    }
 
 
 type alias Model =
@@ -71,6 +79,10 @@ type alias Model =
 
 init : () -> ( Model, Effect Msg )
 init () =
+    let
+        availableMeals =
+            getAvailableMeals
+    in
     ( { todo =
             { items = Api.Client.Loading
             , newItem = ""
@@ -83,12 +95,8 @@ init () =
             }
       , mealPlan =
             { meals =
-                [ ( "Monday", "Hamburger / red lentil burger" )
-                , ( "Tuesday", "Fried rice" )
-                , ( "Wednesday", "Tofu pasta" )
-                , ( "Thursday", "Panncakes" )
-                , ( "Friday", "Tacos / Wrap" )
-                ]
+                List.map2 (\day meal -> ( day, meal )) days availableMeals
+            , availableMeals = availableMeals
             }
       , note = "note"
       }
@@ -255,15 +263,13 @@ viewSl2 model =
             ul []
                 [ li []
                     [ text "Lektorsstigen"
-                    , ul
-                        []
+                    , ul []
                         (List.map
                             (\departure ->
-                                li
-                                    []
+                                li []
                                     [ text departure.destination
                                     , text " "
-                                    , ins [] [ text departure.display ]
+                                    , span [ class "pico-color-green-500" ] [ text departure.display ]
                                     , text " ("
                                     , i [] [ text (formatTimeWithoutSeconds departure.expected) ]
                                     , text ")"
@@ -285,35 +291,44 @@ viewSl model =
 
 viewNote : Model -> Html Msg
 viewNote model =
-    div []
-        [ text "Note"
-        , p [] [ text model.note ]
-        ]
+    div [] []
+
+
+
+-- div []
+--     [ text "Note"
+--     , p [] [ input [ type_ "text", value model.note ] [] ]
+--     ]
 
 
 viewMealPlan : Model -> Html Msg
 viewMealPlan model =
-    div []
-        [ text "Meal Plan"
-        , table []
-            (List.map
-                (\( day, meal ) ->
-                    tr []
-                        [ td [] [ text day ]
-                        , td [] [ text meal ]
-                        ]
-                )
-                model.mealPlan.meals
+    div [ class "meal-plan grid" ]
+        (List.map
+            (\( day, meal ) ->
+                article []
+                    [ div [] [ text day ]
+                    , hr [] []
+                    , div [] [ select [] (List.map (\m -> option [ value m.name, selected (meal.uuid == m.uuid) ] [ text m.name ]) model.mealPlan.availableMeals) ]
+                    , hr [] []
+                    , textarea [ placeholder "Note" ] []
+                    ]
             )
-        ]
+            model.mealPlan.meals
+        )
 
 
 viewDashboard : Model -> Html Msg
 viewDashboard model =
-    div [ class "grid" ]
-        [ viewTodo model
-        , div [] [ viewCalendar model, viewMealPlan model ]
-        , div [] [ viewSl model, viewNote model ]
+    div []
+        [ section [ class "grid" ]
+            [ viewTodo model
+            , div [] [ viewCalendar model ]
+            , div [] [ viewSl model, viewNote model ]
+            ]
+        , section []
+            [ div [] [ viewMealPlan model ]
+            ]
         ]
 
 

@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm i && npm run dev",
         "dev": "concurrently \"npm:dev:*\"",
-        "dev:sass": "sass -w styles/scss/main.scss dist/main.css",
+        "dev:sass": "sass -w styles/scss/main.scss static/main.css",
         "dev:elm-land": "elm-land server",
         "build": "npm run build:sass && npm run build:elm-land",
         "build:sass": "sass styles/scss/main.scss dist/main.css",
@@ -17,5 +17,8 @@
     "devDependencies": {
         "concurrently": "^8.2.2",
         "sass": "^1.77.8"
+    },
+    "dependencies": {
+        "@picocss/pico": "^2.0.6"
     }
 }

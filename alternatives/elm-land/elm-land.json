@@ -33,11 +33,7 @@
             "link": [
                 {
                     "rel": "stylesheet",
-                    "href": "/dist/main.css"
-                },
-                {
-                    "rel": "stylesheet",
-                    "href": "/pico.min.css"
+                    "href": "/main.css"
                 },
                 {
                     "rel": "icon",

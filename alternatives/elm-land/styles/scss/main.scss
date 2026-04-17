@@ -1,1 +1,4 @@
+@use "../../node_modules/@picocss/pico/scss/pico";
+@use "../../node_modules/@picocss/pico/scss/pico.colors" as *;
 @import "./_navbar.scss";
+@import "./_dashboard.scss";
